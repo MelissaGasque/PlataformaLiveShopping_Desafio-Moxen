@@ -5,10 +5,10 @@ import { Product } from "./products.entity"
 @Entity("lives")
 export class Live {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id: string
 
     @Column({length: 30})
-    titulo: string;
+    titulo: string
 
     @Column({type: "text"})
     descricao: string;
@@ -18,11 +18,10 @@ export class Live {
 
     @CreateDateColumn({type:"date", unique:true})
     inicioLive: string
-    // ainda não sei se é string ou date
 
     @CreateDateColumn({type:"date", unique:true})
-    fimLive: Date
-    // Fazer teste
+    fimLive: string
+
 
     @ManyToOne(() => User, (user) => user.live)
     user: User

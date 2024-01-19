@@ -4,10 +4,10 @@ import { Live } from "./live.entity"
 @Entity("products")
 export class Product {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id: string
 
     @Column({length: 30})
-    nome: string;
+    nome: string
 
     @Column()
     imagemURL: string
