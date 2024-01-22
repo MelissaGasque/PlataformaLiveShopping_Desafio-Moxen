@@ -2,7 +2,7 @@ import { DeepPartial, Repository } from "typeorm"
 import { LiveCreateInterface, LiveInterface, LiveUpdateInterface } from "../interfaces/live.interface"
 import { Live } from "../entities/live.entity"
 import { AppDataSource } from "../data-source"
-import { liveSchema } from "../schema/live.schema"
+import { liveSchema, updateLiveSchema } from "../schema/live.schema"
 import { AppError } from "../errors/app.errors"
 import { User } from "../entities/users.entity"
 
@@ -16,14 +16,14 @@ export const readLiveService = async (): Promise<LiveInterface[]> => {
     const liveRepo: Repository<LiveInterface> = AppDataSource.getRepository(Live)
     return liveRepo.find()
 }
-// //Apenas quem criou pode alterar
-// export const updateLiveService = async (payload: DeepPartial<LiveUpdateInterface>, liveId: string): Promise<LiveUpdateInterface> => {
-//     const liveRepo: Repository<Live> = AppDataSource.getRepository(Live)
-//     const live = await liveRepo.findOneBy({ id: liveId })
-//     const updateLive = await liveRepo.save({  ...live, ...payload })
+// Apenas quem criou pode alterar
+export const updateLiveService = async (payload: DeepPartial<LiveUpdateInterface[]>, liveId: string): Promise<LiveUpdateInterface> => {
+    const liveRepo: Repository<Live> = AppDataSource.getRepository(Live)
+    const live = await liveRepo.findOneBy({ id: liveId })
+    const updateLive = await liveRepo.save({  ...live, ...payload })
 
-//     return liveSchema.parse(updateLive)
-// }
+    return updateLiveSchema.parse(updateLive)
+}
 
 export const deleteLiveService = async (liveId: string): Promise<void> => {
     const liveRepo: Repository<Live> = AppDataSource.getRepository(Live)

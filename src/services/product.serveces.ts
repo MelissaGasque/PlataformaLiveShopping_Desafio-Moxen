@@ -1,10 +1,10 @@
 import { Repository } from "typeorm"
 import { ProductCreateInterface, ProductInterface} from "../interfaces/product.interface"
-import { Product } from "../entities/products.entity"
+import { Product, Live } from "../entities/index"
 import { AppDataSource } from "../data-source"
 import { AppError } from "../errors/app.errors"
 // import { productSchema } from "../schema/product.schema"
-import { Live } from "../entities/live.entity"
+
 
 export const createProductService = async(payload: ProductCreateInterface, liveId:string): Promise<ProductInterface> => {
     const productRepo: Repository<Product> = AppDataSource.getRepository(Product)
