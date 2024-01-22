@@ -7,6 +7,7 @@ export const userSchema = z.object({
     password: z.string().max(120).min(4),
 })
 
+export const userIdSchema = userSchema.pick({ id: true })
 export const createUserSchema = userSchema.omit({ id: true })
 export const returnUserSchema = userSchema.omit({ password: true })
 export const updateUserSchema = createUserSchema.partial()

@@ -19,7 +19,7 @@ export const loginService = async (payload: loginInterface): Promise<loginReturn
     }
 
     const token: string = sign(
-        { email: user.email, idToken: user.id, nome: user.name }, 
+        { email: user.email, nome: user.name }, 
         process.env.SECRET_KEY!,
         {
             expiresIn: process.env.EXPIRES_IN!,
