@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Live } from "./live.entity"
 
 @Entity("products")
@@ -12,8 +12,8 @@ export class Product {
     @Column()
     imagemURL: string
 
-    @Column({type: "int"})
-    quantidade: number
+    @Column()
+    quantidade: string
 
     @ManyToOne(() => Live, (live) => live.products)
     live: Live

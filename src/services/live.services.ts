@@ -2,7 +2,7 @@ import { DeepPartial, Repository } from "typeorm"
 import { LiveCreateInterface, LiveInterface, LiveUpdateInterface } from "../interfaces/live.interface"
 import { Live } from "../entities/live.entity"
 import { AppDataSource } from "../data-source"
-import { liveSchema, updateLiveSchema } from "../schema/live.schema"
+import { updateLiveSchema } from "../schema/live.schema"
 import { AppError } from "../errors/app.errors"
 import { User } from "../entities/users.entity"
 

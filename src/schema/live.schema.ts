@@ -10,7 +10,6 @@ export const liveSchema = z.object({
     inicioLive: z.string(),  
     fimLive: z.string(),
     user: userIdSchema
-    // products: productSchema
 })
 export const liveIdSchema = liveSchema.pick({ id: true })
 export const simpleLiveSchema = liveSchema.omit({ id: true, user: true}) 

@@ -1,10 +1,11 @@
 import { Router } from "express"
-import { createProductController, deleteProductController, readProductController } from "../controllers/product.controller"
+import { createProductController, deleteProductController, readProductController, readProdutsOnLiveController } from "../controllers/product.controller"
 
 
 export const productRouter = Router()
 
 productRouter.post("/:liveId", createProductController)
 productRouter.get("", readProductController)
+productRouter.get("/:liveId", readProdutsOnLiveController)
 // productRouter.patch("/:id", updateProductController)
 productRouter.delete("/:id", deleteProductController)
