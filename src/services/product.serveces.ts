@@ -3,7 +3,7 @@ import { ProductCreateInterface, ProductInterface, ProductReadInterface, Product
 import { Product, Live } from "../entities/index"
 import { AppDataSource } from "../data-source"
 import { AppError } from "../errors/app.errors"
-import { productSchema, readProductSchema, updateProductWithoutLiveSchema } from "../schema/product.schema"
+import { readProductSchema } from "../schema/product.schema"
 // import { productSchema } from "../schema/product.schema"
 
 

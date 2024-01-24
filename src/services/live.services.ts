@@ -1,10 +1,11 @@
 import { DeepPartial, Repository } from "typeorm"
 import { LiveCreateInterface, LiveInterface, LiveUpdateInterface } from "../interfaces/live.interface"
-import { Live } from "../entities/live.entity"
+import { Live, User, Product } from "../entities/index"
 import { AppDataSource } from "../data-source"
 import { updateLiveSchema } from "../schema/live.schema"
 import { AppError } from "../errors/app.errors"
-import { User } from "../entities/users.entity"
+
+
 
 export const createLiveService = async(payload: LiveCreateInterface, user: User): Promise<LiveInterface> => {
     const liveRepo: Repository<Live> = AppDataSource.getRepository(Live)
@@ -26,12 +27,22 @@ export const updateLiveService = async (payload: DeepPartial<LiveUpdateInterface
 }
 
 export const deleteLiveService = async (liveId: string): Promise<void> => {
-    const liveRepo: Repository<Live> = AppDataSource.getRepository(Live)
-    const deleteLive = await liveRepo.findOneBy({ id: liveId })
+    const liveRepo: Repository<Live> = AppDataSource.getRepository(Live);
+    const productRepo: Repository<Product> = AppDataSource.getRepository(Product);
+
+    const deleteLive = await liveRepo
+        .createQueryBuilder("live")
+        .leftJoinAndSelect("live.products", "products")
+        .where("live.id = :liveId", { liveId })
+        .getOne();
 
     if (!deleteLive) {
-        throw new AppError("Live não encontrada", 404)
+        throw new AppError("Live não encontrada", 404);
     }
 
-    await liveRepo.remove(deleteLive)
+    if (deleteLive.products && deleteLive.products.length > 0) {
+        await productRepo.remove(deleteLive.products);
+    }
+
+    await liveRepo.remove(deleteLive);
 }

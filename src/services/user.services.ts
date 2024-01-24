@@ -1,9 +1,10 @@
 import { Repository } from "typeorm"
 import { AppDataSource } from "../data-source"
-import { User } from "../entities/users.entity"
+import { User, Live, Product } from "../entities"
 import { UserCreateInterface, UserReturnInterface, UserUpdateInterface } from "../interfaces/user.interface"
 import { returnUserSchema } from "../schema/user.schema"
 import { AppError } from "../errors/app.errors"
+
 
 
 export const createUserService = async(payload: UserCreateInterface): Promise<UserReturnInterface> => {
@@ -19,14 +20,41 @@ export const updateClientService = async (payload: UserUpdateInterface, userId: 
 
     return returnUserSchema.parse(updateClient)
 }
-export const deleteUserService = async (userId: string): Promise<void> => {
-    const userRepo:  Repository<User> = AppDataSource.getRepository(User)
-    const deleteUser = await userRepo.findOneBy({ id: userId })
 
-    if (!deleteUser) {
-        throw new AppError("Usuário não encontrado", 404)
+export const deleteUserService = async (userId: string): Promise<void> => {
+    const userRepo: Repository<User> = AppDataSource.getRepository(User);
+    const liveRepo: Repository<Live> = AppDataSource.getRepository(Live);
+    const productRepo: Repository<Product> = AppDataSource.getRepository(Product);
+
+    const liveIdsToDelete = await liveRepo
+        .createQueryBuilder("live")
+        .select("live.id")
+        .innerJoin("live.user", "user")  
+        .where("user.id = :userId", { userId })
+        .getRawMany();
+
+    if (liveIdsToDelete.length > 0) {
+        const liveIds = liveIdsToDelete.map((idObj) => idObj.live_id);
+
+        const productsToDelete = await productRepo
+            .createQueryBuilder("product")
+            .where("product.liveId IN (:...liveIds)", { liveIds })
+            .getMany();
+
+        if (productsToDelete.length > 0) {
+            await productRepo.remove(productsToDelete);
+        }
+
+        await liveRepo
+            .createQueryBuilder()
+            .delete()
+            .whereInIds(liveIds)
+            .execute();
     }
 
-    await userRepo.remove(deleteUser)
-
+    await userRepo
+        .createQueryBuilder()
+        .delete()
+        .where("id = :userId", { userId })
+        .execute();
 }
