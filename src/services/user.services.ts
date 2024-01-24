@@ -3,8 +3,6 @@ import { AppDataSource } from "../data-source"
 import { User, Live, Product } from "../entities"
 import { UserCreateInterface, UserReturnInterface, UserUpdateInterface } from "../interfaces/user.interface"
 import { returnUserSchema } from "../schema/user.schema"
-import { AppError } from "../errors/app.errors"
-
 
 
 export const createUserService = async(payload: UserCreateInterface): Promise<UserReturnInterface> => {
