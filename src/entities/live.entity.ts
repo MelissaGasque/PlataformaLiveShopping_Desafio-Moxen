@@ -26,6 +26,6 @@ export class Live {
     @ManyToOne(() => User, (user) => user.live)
     user: User
     
-    @OneToMany(() => Product, (product) => product.live)
+    @OneToMany(() => Product, (product) => product.live, { onDelete: "CASCADE" })
     products: Product[]
 }

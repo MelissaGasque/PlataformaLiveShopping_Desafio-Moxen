@@ -13,7 +13,6 @@ export const readLiveController = async(req: Request, res: Response): Promise<Re
 }
 export const updateLiveController  = async (req: Request, res: Response): Promise<Response> => {
     const liveId: string = req.params.id
-    // const user: User = res.locals.decoded.sub
     const updateUser = req.body
     const update = await updateLiveService(updateUser, liveId)
     return res.status(200).json(update)

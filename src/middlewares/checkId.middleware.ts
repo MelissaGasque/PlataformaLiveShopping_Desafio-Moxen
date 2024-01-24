@@ -9,7 +9,6 @@ export const checkUserId = async(req: Request, res: Response, next: NextFunction
     if(!userId){
         throw new AppError("Usuário não encontrado", 404)
     }
-    // res.locals.userId = userId
 
     return next()
 }

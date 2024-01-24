@@ -1,9 +1,9 @@
-import { Repository } from "typeorm"
-import { ProductCreateInterface, ProductInterface, ProductReadInterface } from "../interfaces/product.interface"
+import { DeepPartial, Repository } from "typeorm"
+import { ProductCreateInterface, ProductInterface, ProductReadInterface, ProductUpdateInterface } from "../interfaces/product.interface"
 import { Product, Live } from "../entities/index"
 import { AppDataSource } from "../data-source"
 import { AppError } from "../errors/app.errors"
-import { readProductSchema } from "../schema/product.schema"
+import { productSchema, readProductSchema, updateProductWithoutLiveSchema } from "../schema/product.schema"
 // import { productSchema } from "../schema/product.schema"
 
 
@@ -34,13 +34,13 @@ export const readProdutsOnLiveService = async (liveId: string): Promise<boolean>
     }
 };
 // //Apenas quem criou pode alterar
-// export const updateProductService = async (payload: ProductUpdateInterface, productId: string): Promise<ProductInterface> => {
-//     const productRepo: Repository<Product> = AppDataSource.getRepository(Product)
-//     const product = await productRepo.findOneBy({ id: productId })
-//     const updateProduct = await productRepo.save({ ...product, ...payload })
+export const updateProductService = async (payload: DeepPartial<ProductUpdateInterface>, productId: string): Promise<ProductReadInterface> => {
+    const productRepo: Repository<Product> = AppDataSource.getRepository(Product)
+    const product = await productRepo.findOneBy({ id: productId })
+    const updateProduct = await productRepo.save({ ...product, ...payload })
 
-//     return productSchema.parse(updateProduct)
-// }
+    return readProductSchema.parse(updateProduct)
+}
 //Apenas quem criou pode deletar
 export const deleteProductService = async (productId: string): Promise<void> => {
     const productRepo: Repository<Product> = AppDataSource.getRepository(Product)

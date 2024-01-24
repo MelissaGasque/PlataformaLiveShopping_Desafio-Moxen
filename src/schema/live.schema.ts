@@ -1,5 +1,5 @@
 import { z } from "zod"
-// import { productSchema } from "./product.schema"
+
 import { userIdSchema } from "./user.schema"
 
 export const liveSchema = z.object({
@@ -14,5 +14,4 @@ export const liveSchema = z.object({
 export const liveIdSchema = liveSchema.pick({ id: true })
 export const simpleLiveSchema = liveSchema.omit({ id: true, user: true}) 
 export const createLiveSchema = liveSchema.omit({ id: true })
-// export const readLiveSchema = liveSchema.array()
 export const updateLiveSchema = simpleLiveSchema.partial()

@@ -16,7 +16,7 @@ export class User {
     @Column({length: 120})
     password: string
 
-    @OneToMany(() => Live, (live) => live.user)
+    @OneToMany(() => Live, (live) => live.user, { onDelete: "CASCADE" })
     live: Live[]
 
     @BeforeInsert()

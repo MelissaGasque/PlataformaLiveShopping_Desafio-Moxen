@@ -10,5 +10,6 @@ export const productSchema = z.object({
 })
 
 export const createProductSchema = productSchema.omit({ id: true })
+export const updateProductWithoutLiveSchema = createProductSchema.omit({live:true})
 export const updateProductSchema = createProductSchema.partial()
 export const readProductSchema = productSchema.omit({live:true})

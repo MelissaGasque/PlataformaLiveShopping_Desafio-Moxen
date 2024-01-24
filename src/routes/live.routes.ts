@@ -4,7 +4,6 @@ import { createLiveController, deleteLiveController, readLiveController } from "
 import { verifyToken, isOwner } from "../middlewares/index.middleware"
 
 
-
 export const liveRouter = Router()
 
 liveRouter.post("", verifyToken, createLiveController)
