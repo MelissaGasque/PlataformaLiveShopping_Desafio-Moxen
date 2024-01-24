@@ -5,7 +5,7 @@ import { createProductController, deleteProductController, readProductController
 export const productRouter = Router()
 
 productRouter.post("/:liveId", createProductController)
-productRouter.get("", readProductController)
+productRouter.get("/:liveId/list", readProductController)
 productRouter.get("/:liveId", readProdutsOnLiveController)
 // productRouter.patch("/:id", updateProductController)
 productRouter.delete("/:id", deleteProductController)

@@ -8,7 +8,8 @@ export const createProductController = async(req: Request, res: Response): Promi
     return res.status(201).json(createLive)
 }
 export const readProductController = async(req: Request, res: Response): Promise<Response> => {
-    const lives = await readProductService()
+    const liveId = req.params.liveId
+    const lives = await readProductService(liveId)
     return res.status(200).json(lives)
 }
 export const readProdutsOnLiveController = async(req: Request, res: Response): Promise<Response> => {

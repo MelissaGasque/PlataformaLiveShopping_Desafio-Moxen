@@ -1,8 +1,9 @@
 import { Repository } from "typeorm"
-import { ProductCreateInterface, ProductInterface } from "../interfaces/product.interface"
+import { ProductCreateInterface, ProductInterface, ProductReadInterface } from "../interfaces/product.interface"
 import { Product, Live } from "../entities/index"
 import { AppDataSource } from "../data-source"
 import { AppError } from "../errors/app.errors"
+import { readProductSchema } from "../schema/product.schema"
 // import { productSchema } from "../schema/product.schema"
 
 
@@ -17,18 +18,19 @@ export const createProductService = async(payload: ProductCreateInterface, liveI
     await productRepo.save(product)
     return product
 }
-export const readProductService = async (): Promise<ProductInterface[]> => {
-    const productRepo: Repository<ProductInterface> = AppDataSource.getRepository(Product)
-    return productRepo.find()
+export const readProductService = async (liveId: string): Promise<ProductReadInterface[]> => {
+    const productRepo: Repository<Product> = AppDataSource.getRepository(Product);
+    const products = await productRepo.find({ where: { live: { id: liveId } }, relations: ['live'] })
+    return products.map(product => readProductSchema.parse(product))
 }
 export const readProdutsOnLiveService = async (liveId: string): Promise<boolean> => {
-    const productRepo: Repository<Product> = AppDataSource.getRepository(Product);
-    const product = await productRepo.findOne({ where: { live: { id: liveId } }, relations: ['live'] });
+    const productRepo: Repository<Product> = AppDataSource.getRepository(Product)
+    const product = await productRepo.findOne({ where: { live: { id: liveId } }, relations: ['live'] })
 
     if (product) {
-        return true;
+        return true
     } else {
-        return false;
+        return false
     }
 };
 // //Apenas quem criou pode alterar
